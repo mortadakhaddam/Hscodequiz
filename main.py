@@ -68,9 +68,11 @@ try:
         "support_ligatures": False,
     })
     RESHAPE_OK = True
-except ImportError:
+    RESHAPE_IMPORT_ERROR = None
+except ImportError as _e:
     RESHAPE_OK = False
     _reshaper = None
+    RESHAPE_IMPORT_ERROR = str(_e)
 
 
 ARABIC_RANGE = re.compile(r'[\u0600-\u06FF]')
@@ -871,6 +873,17 @@ class HSQuizApp(App):
 
         if not self.hs_codes:
             show_popup("بيانات مفقودة", "ملف hs_codes_ar.json فارغ أو مفقود.")
+
+        # Silent diagnostic: if Arabic reshaping libraries failed to import,
+        # log it to a file instead of bothering the user with a popup.
+        # Check this file if Arabic text ever looks wrong again.
+        if not RESHAPE_OK:
+            try:
+                log_path = os.path.join(APP_DIR, "reshape_import_error.txt")
+                with open(log_path, "w", encoding="utf-8") as f:
+                    f.write(str(RESHAPE_IMPORT_ERROR))
+            except Exception:
+                pass
 
         sm = ScreenManager()
         sm.add_widget(MenuScreen(name="menu"))
