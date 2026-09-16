@@ -20,7 +20,7 @@ version = 1.0
 
 # (list) Application requirements
 # arabic-reshaper and python-bidi are pure-Python and install fine via pip
-requirements = python3==3.11.6,kivy==2.3.0,arabic-reshaper,python-bidi
+requirements = requirements = python3==3.11.6,hostpython3==3.11.6,kivy==2.3.0,arabic-reshaper,python-bidi
 
 # (str) Presplash / icon - leave commented out unless you add your own files
 #icon.filename = %(source.dir)s/icon.png
